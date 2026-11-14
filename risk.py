@@ -11,7 +11,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.metrics import precision_score, recall_score, confusion_matrix, roc_auc_score
 
 ROOT = Path(__file__).resolve().parent
-MODELS = ROOT / 'private_models'
+MODELS = ROOT / 'private_data' / 'models'
 MODELS.mkdir(exist_ok=True)
 BASELINE_PATH = MODELS / 'baseline_synthetic_v2.joblib'
 FEATURES = ['amount','new_address','new_device','recent_address_change','failed_logins',

@@ -8,6 +8,8 @@ from datetime import datetime, timezone, timedelta
 from collections import defaultdict
 from email.message import EmailMessage
 from urllib.parse import urlsplit
+from argon2.exceptions import VerifyMismatchError, VerificationError
+
 
 ROOT=Path(__file__).resolve().parent
 if (ROOT/'.env').exists():
