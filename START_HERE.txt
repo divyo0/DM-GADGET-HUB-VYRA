@@ -1,0 +1,37 @@
+DM – GADGET HUB | VYRA Risk OS 2.0
+CREATOR: Divy Mathur
+OWNER EMAIL: divymathur12345678901@gmail.com
+
+WINDOWS QUICK START
+===================
+1. Extract the complete ZIP file to a folder.
+2. Install Python 3.12 from python.org if you do not have it.
+3. Open the extracted DM_GADGET_HUB_VYRA_V2 folder.
+4. Double-click run.bat. On first start it installs packages and asks you to choose your own private admin password.
+5. Go to http://127.0.0.1:8765 and sign in with your owner email and new password.
+6. Admin: Owner control -> create organization -> invite partners. Partner organizations start EMPTY, with no demo data.
+7. Partner: Integrations -> import merchant transaction CSV or generate API key. Risk intelligence provides recommendations and an explanation.
+8. Reviewer-only demo is a separate explicit sandbox sign-in from the SAME computer.
+
+IMPORTANT
+=========
+This is a LOCAL educational risk operations prototype, not a real payment gateway.
+Risk AI is trained on synthetic baseline data until properly reviewed merchant cases are available for per-tenant training.
+Login passwords, SMTP credentials and actual bank/card data are NOT bundled.
+To use Gmail OTP, edit .env locally and see SETUP_GMAIL_OTP.md. Without SMTP setup, the login does NOT claim to send genuine OTP email.
+Card payment authorization, payment network chargeback submission, card blocking, account freezes, and live bank actions are NOT performed.
+Do not publish .env, private_data/, private_models/ or private server files on a public GitHub repository.
+Read README.md and SECURITY_AND_DEPLOY.md before using actual merchant data.
+
+FILES
+=====
+CAPSTONE_REPORT.pdf    Full 13-page solution to all six GadgetHub capstone requirements.
+README.md              Features, complete walkthrough, input CSV fields, API example, model limitations.
+SETUP_GMAIL_OTP.md     Optional Gmail SMTP OTP verification setup.
+SECURITY_AND_DEPLOY.md Security restrictions and production gap analysis.
+previews/              Screenshots of the tested updated interface.
+
+LOCAL DEVELOPMENT CHECKS
+========================
+At build time: 12 automated backend/integration tests passed and separate UI modal behaviour checks passed.
+No cloud live-demo URL is provided or claimed.
