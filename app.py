@@ -32,6 +32,7 @@ SMTP_HOST=os.getenv('SMTP_HOST','smtp.gmail.com').strip()
 SMTP_PORT=int(os.getenv('SMTP_PORT','465'))
 SMTP_READY=bool(SMTP_USER and SMTP_PASSWORD)
 DEMO=os.getenv('ENABLE_REVIEWER_DEMO','true').lower() in ('1','true','yes')
+REVIEWER_ACCESS_CODE=os.getenv('REVIEWER_ACCESS_CODE','').strip()
 SECURE_COOKIE=os.getenv('COOKIE_SECURE','false').lower() in ('1','true','yes')
 ATTEMPTS=defaultdict(list)
 LOCK=threading.Lock()
@@ -271,12 +272,19 @@ async def verify(req:Request):
 
 @app.post('/api/auth/demo')
 async def demo(req:Request):
-    # Deliberately loopback-only. Deployments must not expose a public no-password login.
+    # Public access requires a server-side reviewer code; sandbox remains tenant-isolated.
     if not DEMO:fail('Reviewer sandbox is disabled',403)
-    if (req.client.host if req.client else '') not in ('127.0.0.1','::1','localhost','testclient'):
-        fail('The reviewer sandbox is available only on this device',403)
+    ip=req.client.host if req.client else 'unknown'
+    if not limited('reviewer-demo:'+ip,8,900):
+        fail('Too many reviewer login attempts. Try again later',429)
+    if len(REVIEWER_ACCESS_CODE)<16:
+        fail('Reviewer access is not configured; set a 16+ character access code',503)
+    data=await body_json(req)
+    submitted=str(data.get('code',''))
+    if not hmac.compare_digest(submitted,REVIEWER_ACCESS_CODE):
+        fail('Invalid reviewer access code',403)
     user_id=make_demo_user()
-    audit(None,user_id,'DEMO_LOGIN','Isolated reviewer tenant')
+    audit(None,user_id,'DEMO_LOGIN','Access-code-protected isolated reviewer tenant')
     return session_response(user_id,JSONResponse({'ok':True}))
 
 @app.get('/api/auth/invite/{token}')
